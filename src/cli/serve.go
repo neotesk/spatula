@@ -111,6 +111,10 @@ var Serve = Types.Command {
         http.HandleFunc( "/", handler );
 
         fmt.Printf( "Now serving at %s\n", Internal.Colorify( fmt.Sprintf( "http://127.0.0.1:%s/", port ), "ada440" ) );
-        http.ListenAndServe( ":" + port, nil );
+        err := http.ListenAndServe( ":" + port, nil );
+        if err != nil {
+            Internal.ErrPrintf( "Fatal Error: %s\n", err.Error() );
+            os.Exit( 1 );
+        }
     },
 };
