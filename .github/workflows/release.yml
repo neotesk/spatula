@@ -1,0 +1,42 @@
+name: Build Spatula and Release
+
+on:
+    push:
+        tags:
+            - '*'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            -
+                uses: actions/checkout@v4
+            -
+                name: Fetch Truct Version 1.0.9
+                run: curl -Lo truct https://github.com/neotesk/truct/releases/download/1.0.9/truct.linux-amd64
+            -
+                name: Change permissions
+                run: chmod +x truct
+            -
+                name: Build the release binaries
+                run: ./truct do build ${{ github.ref_name }}
+            -
+                name: Create Release
+                id: create_release
+                uses: actions/create-release@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    tag_name: ${{ github.ref }}
+                    release_name: Version ${{ github.ref }}
+                    draft: false
+                    prerelease: false
+            -
+                name: Upload Release Assets
+                id: upload-release-assets
+                uses: dwenegar/upload-release-assets@v1
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                with:
+                    release_id: ${{ steps.create_release.outputs.id }}
+                    assets_path: build/release
