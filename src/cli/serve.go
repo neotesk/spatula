@@ -46,7 +46,7 @@ var Serve = Types.Command {
                 return;
             }
             moddedData := string( data );
-            modder := "</body>";
+            modder := "</head>";
             splitted := strings.Split( moddedData, modder );
             if ( len( splitted ) > 1 ) {
                 moddedData = splitted[ 0 ] + "<script>const _ev=new EventSource('http://127.0.0.1:" + port + "/events');_ev.onmessage=()=>window.location.reload()</script>" + modder + splitted[ 1 ];
