@@ -84,7 +84,7 @@ var Serve = Types.Command {
                             }
                             if event.Op != FSN.Chmod {
                                 select {
-                                    case Internal.SSEChannel <- "123212a":
+                                    case Internal.SSEChannel <- "0":
                                     default:
                                 }
                                 if Internal.IsDebug {
